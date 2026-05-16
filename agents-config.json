@@ -1,0 +1,198 @@
+{
+  "version": "3.0",
+  "created": "2026-05-14",
+  "description": "Configuración del sistema orquestador multiagente Hermes (Tiacauh)",
+  "orchestrator": {
+    "model": "gemini-3-flash-preview",
+    "role": "Enrutamiento inteligente de tareas al sub-agente más económico y adecuado",
+    "rule": "NUNCA procesar tareas directamente — siempre delegar al sub-agente correcto"
+  },
+  "agents": {
+    "tier1_complex_reasoning": {
+      "otomig": {
+        "name": "otomig",
+        "tier": 1,
+        "model": "gemini-3-pro-preview",
+        "endpoint": "https://generativelanguage.googleapis.com/v1beta/openai/v1/chat/completions",
+        "api_key_env": "GEMINI_KEY",
+        "use": "Análisis de código extenso, OCR avanzado, video, contexto 1M. max_tokens >= 64.",
+        "cost_per_million": {
+          "input": 0.3,
+          "output": 2.5
+        },
+        "status": "up"
+      },
+      "otomid": {
+        "name": "otomid",
+        "tier": 1,
+        "model": "deepseek-v4-pro",
+        "endpoint": "https://api.deepseek.com/chat/completions",
+        "api_key_env": "DEEPSEEK_KEY",
+        "use": "Razonamiento complejo, chain-of-thought, matemáticas, lógica formal.",
+        "cost_per_million": {
+          "input": 0.55,
+          "output": 2.19
+        },
+        "status": "up"
+      }
+    },
+    "tier2_daily": {
+      "jaguarg": {
+        "name": "jaguarg",
+        "tier": 2,
+        "model": "gemini-3-flash-preview",
+        "endpoint": "https://generativelanguage.googleapis.com/v1beta/openai/v1/chat/completions",
+        "api_key_env": "GEMINI_KEY",
+        "use": "Análisis de código, OCR, video, contexto 1M. Versátil. max_tokens >= 64.",
+        "cost_per_million": {
+          "input": 0.3,
+          "output": 2.5
+        },
+        "status": "up"
+      },
+      "jaguarm": {
+        "name": "jaguarm",
+        "tier": 2,
+        "model": "mistral-large-2512",
+        "endpoint": "https://api.mistral.ai/v1/chat/completions",
+        "api_key_env": "MISTRAL_KEY",
+        "use": "Idiomas europeos, cumplimiento GDPR, documentos legales.",
+        "cost_per_million": {
+          "input": 0.5,
+          "output": 1.5
+        },
+        "status": "up"
+      },
+      "jaguargr": {
+        "name": "jaguargr",
+        "tier": 2,
+        "model": "openai/gpt-oss-120b",
+        "endpoint": "https://api.groq.com/openai/v1/responses",
+        "api_key_env": "GROQ_KEY",
+        "use": "Baja latencia. Formato OpenAI Responses API. Requiere User-Agent curl.",
+        "cost_per_million": {
+          "input": 0.59,
+          "output": 0.79
+        },
+        "status": "up"
+      },
+      "jaguard": {
+        "name": "jaguard",
+        "tier": 2,
+        "model": "deepseek-v4-pro",
+        "endpoint": "https://api.deepseek.com/chat/completions",
+        "api_key_env": "DEEPSEEK_KEY",
+        "use": "Alternativa económica alta calidad: redacción, análisis, resumen.",
+        "cost_per_million": {
+          "input": 0.27,
+          "output": 1.1
+        },
+        "status": "up"
+      }
+    },
+    "tier3_automation": {
+      "tlamanil": {
+        "name": "tlamanil",
+        "tier": 3,
+        "model": "qwen3.5-9b",
+        "endpoint": "http://localhost:1234/v1/chat/completions",
+        "api_key_env": "LM_STUDIO_KEY",
+        "use": "EL MÁS UTILIZADO. Git, APIs, MCP, Terminal, automatización local.",
+        "cost_per_million": {
+          "input": 0.0,
+          "output": 0.0
+        },
+        "status": "up"
+      },
+      "tlamanig": {
+        "name": "tlamanig",
+        "tier": 3,
+        "model": "gemini-3.1-flash-lite-preview",
+        "endpoint": "https://generativelanguage.googleapis.com/v1beta/openai/v1/chat/completions",
+        "api_key_env": "GEMINI_KEY",
+        "use": "Análisis logs, context 1M, automatización con visión. max_tokens >= 64.",
+        "cost_per_million": {
+          "input": 0.3,
+          "output": 2.5
+        },
+        "status": "up"
+      },
+      "tlamanim": {
+        "name": "tlamanim",
+        "tier": 3,
+        "model": "mistral-medium-latest",
+        "endpoint": "https://api.mistral.ai/v1/chat/completions",
+        "api_key_env": "MISTRAL_KEY",
+        "use": "Clasificación masiva, extracción de datos, pipelines alto volumen.",
+        "cost_per_million": {
+          "input": 0.1,
+          "output": 0.3
+        },
+        "status": "up"
+      }
+    },
+    "tier4_coding": {
+      "aguilal-coder": {
+        "name": "aguilal-coder",
+        "tier": 4,
+        "model": "qwen3.5-9b",
+        "endpoint": "http://localhost:1234/v1/chat/completions",
+        "api_key_env": "LM_STUDIO_KEY",
+        "use": "EL MÁS UTILIZADO. Formateo, snippets, documentación, refactor simple.",
+        "cost_per_million": {
+          "input": 0.0,
+          "output": 0.0
+        },
+        "status": "up"
+      },
+      "aguilad-coder": {
+        "name": "aguilad-coder",
+        "tier": 4,
+        "model": "deepseek-v4-pro",
+        "endpoint": "https://api.deepseek.com/v1/chat/completions",
+        "api_key_env": "DEEPSEEK_KEY",
+        "use": "Coding complejo, debugging difícil, arquitectura, code review.",
+        "cost_per_million": {
+          "input": 0.27,
+          "output": 1.1
+        },
+        "status": "up"
+      },
+      "aguilaq-coder": {
+        "name": "aguilaq-coder",
+        "tier": 4,
+        "model": "qwen3-coder-plus",
+        "endpoint": "https://dashscope-us.aliyuncs.com/compatible-mode/v1/chat/completions",
+        "api_key_env": "DASHSCOPE_KEY",
+        "use": "Alternativa especializada: generación código complejo, debugging.",
+        "cost_per_million": {
+          "input": 0.8,
+          "output": 2.0
+        },
+        "status": "up"
+      }
+    }
+  },
+  "routing": {
+    "coding": {
+      "simple": "aguilal-coder",
+      "complex": "aguilaq-coder",
+      "critical": "aguilad-coder",
+      "extreme": "otomid"
+    },
+    "reasoning": {
+      "primary": "otomig",
+      "secondary": "otomid"
+    },
+    "daily": {
+      "primary": "jaguarg",
+      "secondary": "jaguarm",
+      "fallback": "jaguard"
+    },
+    "automation": {
+      "primary": "tlamanil",
+      "secondary": "tlamanim",
+      "fallback": "tlamanig"
+    }
+  }
+}
