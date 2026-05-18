@@ -25,7 +25,6 @@ Automatización ligera y análisis de logs masivos con ventana de contexto de 1M
 
 ## RESTRICCIONES TÉCNICAS
 - **Rutas:** Rutas absolutas.
-- **Gemini Quirk:** Forzar `max_tokens` ≥ 64.
 - **Skills:** Crea skills para patrones de búsqueda en logs recurrentes.
 
 ## ESTILO DE RESPUESTA

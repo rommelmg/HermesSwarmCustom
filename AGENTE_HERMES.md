@@ -10,6 +10,12 @@ Las propiedades técnicas de cada agente (modelo, endpoint, tier, costos y ruteo
 
 Para activar o actualizar un agente, solicita a Hermes: *"Ejecuta el prompt de sistema para el agente <nombre_agente>"*.
 
+### 🛠️ REQUISITOS PREVIOS AL DESPLIEGUE
+Antes de iniciar, asegura el cumplimiento de los siguientes puntos:
+1.  **Variables de Entorno**: Exporta todas las API Keys necesarias en tu shell (p. ej., `$GEMINI_KEY`, `$DEEPSEEK_KEY`, `$MISTRAL_KEY`, `$GROQ_KEY`, `$DASHSCOPE_KEY`).
+2.  **Infraestructura Local**: Para los agentes de Tier 3 y 4 (Local), **LM Studio** debe estar en ejecución y con el servidor cargado en `http://localhost:1234`.
+3.  **Protocolo de Conocimiento**: Verifica que el archivo `./skills/swarm-collective-learning.md` exista en el proyecto para habilitar el aprendizaje compartido.
+
 ---
 
 ### 👑 PERFIL MAESTRO: [NOMBRE_AGENTE_MAESTRO]
@@ -19,7 +25,8 @@ El ecosistema completo de sub-agentes se despliega bajo el perfil de Hermes deno
 Para desplegar, recrear o actualizar el ecosistema [NOMBRE_AGENTE_MAESTRO] completo (agentes + ruteo inteligente), sigue estrictamente este orden de ejecución:
 
 1.  **Configuración de Agentes**: Asegura que el archivo `./agents-config.json` contenga la definición técnica actualizada de todos los agentes (Tiers 1-4) y sus reglas de ruteo.
-2.  **Generación de Prompts Dorado**: Verifica o crea los archivos `.md` en `./prompts/` para cada agente definido. Deben seguir el formato **Dorado** (Identidad, Misión, Matriz, Protocolo, Escalado, Restricciones, Estilo).
+2.  **Generación de Prompts Dorado**: Verifica o crea los archivos `.md` en `./prompts/` para cada agente definido siguiendo el formato **Dorado**. 
+    *   **TLATOANI (MAESTRO):** Es crítico que el archivo `prompts/tlatoani.md` defina su función como orquestador puro: **NUNCA debe responder directamente**, solo delegar mediante `delegate_task` y supervisar.
 3.  **Instalación del Ruteo Inteligente (Smart Router)**: Ejecuta el script de orquestación interna pasando el nombre del perfil como argumento:
     ```bash
     python ./install_swarm_routing.py --profile [NOMBRE_AGENTE_MAESTRO]
@@ -27,6 +34,8 @@ Para desplegar, recrear o actualizar el ecosistema [NOMBRE_AGENTE_MAESTRO] compl
     *   **Acción del Agente**: El agente DEBE ejecutar este comando de terminal automáticamente.
     *   **Efecto**: Este script es idempotente. Creará el perfil `[NOMBRE_AGENTE_MAESTRO]`, los directorios necesarios y aplicará el parche de ruteo dinámico en el núcleo de Hermes (`run_agent.py`) si no existen, o los actualizará/sobrescribirá si ya existen.
 4.  **Validación**: Una vez finalizado, el sistema estará listo para usarse con el comando `hermes -p [NOMBRE_AGENTE_MAESTRO]`. La nueva capa de ruteo operará de forma transparente.
+    *   **Prueba de Fuego (Tier 3)**: Solicita una tarea de terminal (p. ej., "lista los archivos"). El sistema debe delegar a `tlamanil`.
+    *   **Prueba de Fuego (Tier 1/2)**: Plantea un problema de arquitectura o lógica compleja. El sistema debe escalar a `otomid` o `jaguarg`.
 
 ---
 
@@ -56,7 +65,6 @@ hermes profile create [NOMBRE_AGENTE_MAESTRO]
 - **Modelo:** `gemini-3-pro-preview`
 - **Endpoint:** `https://generativelanguage.googleapis.com/v1beta/openai/v1/chat/completions`
 - **API Key:** Variable de entorno `$GEMINI_KEY`
-- **⚠️ NOTA DE IMPLEMENTACIÓN:** Usar siempre `max_tokens` ≥ 64. Con valores menores la API retorna HTTP 200 pero con `content` vacío y `finish_reason: length`.
 - **Uso:** Fuerte en análisis de código extenso (miles de líneas), OCR avanzado, procesamiento de video, tareas con ventana de contexto muy larga (1M tokens).
 - **Costo:** $0.30 / $2.50 por millón de tokens
 
@@ -75,7 +83,6 @@ hermes profile create [NOMBRE_AGENTE_MAESTRO]
 - **Modelo:** `gemini-3-flash-preview`
 - **Endpoint:** `https://generativelanguage.googleapis.com/v1beta/openai/v1/chat/completions`
 - **API Key:** Variable de entorno `$GEMINI_KEY`
-- **⚠️ NOTA DE IMPLEMENTACIÓN:** Usar siempre `max_tokens` ≥ 64. Con valores menores la API retorna HTTP 200 pero con `content` vacío y `finish_reason: length`.
 - **Uso:** Fuerte en análisis de código extenso (miles de líneas), OCR avanzado, procesamiento de video, tareas con ventana de contexto muy larga (1M tokens).
 - **Costo:** $0.30 / $2.50 por millón de tokens
 
@@ -94,7 +101,6 @@ hermes profile create [NOMBRE_AGENTE_MAESTRO]
 - **Costo:** $0.00 con cuota gratuita / $0.59 / $0.79 por millón de tokens sin cuota
 - **⚠️ NOTA DE IMPLEMENTACIÓN:** El endpoint `/v1/responses` usa la **OpenAI Responses API**, cuyo formato difiere del estándar chat completions:
   - Campo `input` en lugar de `messages`
-  - Campo `max_output_tokens` en lugar de `max_tokens`
   - Requiere header `User-Agent: curl/7.88.0` (sin él retorna 403 Cloudflare)
   - La respuesta se extrae de `output[].content[].text`, no de `choices[].message.content`
 
@@ -106,8 +112,7 @@ hermes profile create [NOMBRE_AGENTE_MAESTRO]
     -H "User-Agent: curl/7.88.0" \
     -d "{
       \"model\": \"openai/gpt-oss-120b\",
-      \"input\": \"$TAREA\",
-      \"max_output_tokens\": 4096
+      \"input\": \"$TAREA\"
     }")
   ```
 
@@ -143,7 +148,6 @@ hermes profile create [NOMBRE_AGENTE_MAESTRO]
 - **Modelo:** `gemini-3.1-flash-lite-preview`
 - **Endpoint:** `https://generativelanguage.googleapis.com/v1beta/openai/v1/chat/completions`
 - **API Key:** Variable de entorno `$GEMINI_KEY`
-- **⚠️ NOTA DE IMPLEMENTACIÓN:** Usar siempre `max_tokens` ≥ 64. Con valores menores la API retorna HTTP 200 pero con `content` vacío y `finish_reason: length`.
 - **Uso:** Fuerte en análisis de código extenso (miles de líneas), OCR avanzado, procesamiento de video, tareas con ventana de contexto muy larga (1M tokens).
 - **Costo:** $0.30 / $2.50 por millón de tokens
 
@@ -197,8 +201,7 @@ Headers:
 Body:
 {
   "model": "<model_name>",
-  "messages": [{"role": "user", "content": "..."}],
-  "max_tokens": 4096
+  "messages": [{"role": "user", "content": "..."}]
 }
 ```
 
@@ -220,8 +223,7 @@ Headers:
 Body:
 {
   "model": "<nombre_exacto_en_lm_studio>",
-  "messages": [{"role": "user", "content": "..."}],
-  "max_tokens": 4096
+  "messages": [{"role": "user", "content": "..."}]
 }
 ```
 

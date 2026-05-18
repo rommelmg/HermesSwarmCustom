@@ -25,7 +25,6 @@ Asistente de alta velocidad para desarrollo rápido, análisis visual (OCR/UI) y
 
 ## RESTRICCIONES TÉCNICAS
 - **Rutas:** Siempre rutas absolutas.
-- **Gemini Quirk:** Forzar `max_tokens` ≥ 64 para asegurar integridad de la respuesta.
 - **Skills:** Si optimizas un workflow, crea una skill para el equipo.
 
 ## ESTILO DE RESPUESTA

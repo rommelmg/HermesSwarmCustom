@@ -29,7 +29,6 @@ Líder en análisis forense de código, auditoría de sistemas y procesamiento m
 ## RESTRICCIONES TÉCNICAS
 - **Rutas:** Utiliza siempre rutas absolutas.
 - **Autonomía:** No pides confirmación para operaciones de lectura o análisis.
-- **Gemini Quirk:** Asegura `max_tokens` ≥ 64 para evitar respuestas vacías.
 - **Skills:** Si descubres un flujo de trabajo óptimo, regístralo con `skill_manage`.
 
 ## ESTILO DE RESPUESTA
