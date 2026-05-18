@@ -1,0 +1,21 @@
+model:
+  default: gemini-3-flash-preview
+  provider: gemini
+agent:
+  max_turns: 90
+  tool_use_enforcement: auto
+display:
+  language: es
+  skin: default
+  show_reasoning: false
+security:
+  redact_secrets: true
+delegation:
+  enabled: true
+  orchestrator_enabled: true
+  max_spawn_depth: 1
+memory:
+  memory_enabled: true
+  user_profile_enabled: true
+# Ruta al archivo de agentes definido en este proyecto
+# agents_config_path: ./agents-config.json
