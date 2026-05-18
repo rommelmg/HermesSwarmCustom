@@ -43,8 +43,8 @@ class StaticRouter:
             agent = self.config.get("orchestrator", {}).get("model", "otomig")
         
         return {
-            "decision": "delegate",
-            "agent": orchestrator,
+            "decision": "direct" if score < 5 else "delegate",
+            "agent": agent,
             "score": score,
             "signals": signals
         }
