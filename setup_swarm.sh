@@ -23,3 +23,6 @@ cp "$PROJECT_DIR/config_hermes_swarm.yaml" "$PROFILE_DIR/config.yaml"
 ln -sf "$PROJECT_DIR/agents-config.json" "$PROFILE_DIR/agents-config.json"
 
 echo ">>> ¡Listo! Ahora puedes iniciar con: hermes -p $PROFILE_NAME"
+
+# 5. Instalar ruteo automático del swarm
+python "$PROJECT_DIR/install_swarm_routing.py" --profile $PROFILE_NAME
