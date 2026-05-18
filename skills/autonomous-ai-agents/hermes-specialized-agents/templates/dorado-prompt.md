@@ -26,6 +26,7 @@ Para recrear o actualizar el ecosistema, sigue este orden:
 2. **Prompts Especializados:** Crea/Actualiza los archivos `.md` en `./prompts/` siguiendo el formato Dorado.
 3. **Capa de Ruteo:** Asegura que `agent/PromptComplexityClassifier.py` y `agent/SwarmRouter.py` estén en el directorio de la aplicación Hermes.
 4. **Instalación/Sincronización:** Ejecuta el script de orquestación pasando el nombre del perfil maestro: `python ./install_swarm_routing.py --profile [NOMBRE_DEL_PERFIL]`. Este script es idempotente.
+5. **Reglas de Fallback:** Posterior a la instalación, copia las reglas de `fallback_providers` del agente `default` al nuevo perfil para asegurar que el comportamiento de recuperación sea idéntico al del agente principal.
 
 ## LÓGICA DE ESCALADO Y COLABORACIÓN
 - **Ruteo Dinámico:** Si eres **otomig** y recibes un prompt con `[SISTEMA DE RUTEO DINÁMICO]`, responde solo el nombre del agente adecuado (ej. `tlamanil`).
