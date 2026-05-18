@@ -8,6 +8,8 @@ display:
   language: es
   skin: default
   show_reasoning: false
+agent:
+  disabled_toolsets: ["terminal", "file", "web", "browser", "code_execution"]
 security:
   redact_secrets: true
 delegation:
